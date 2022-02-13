@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GeoProject.Helpers;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,10 +19,21 @@ namespace GeoProject {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        public MainWindow()
+    public partial class OpenFile : Window
+    {
+        public OpenFile()
         {
             InitializeComponent();
+        }
+
+        private void btnOpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var fileName = openFileDialog.FileName;
+                var res = JsonReader.LoadJson(fileName);
+            }
         }
     }
 }

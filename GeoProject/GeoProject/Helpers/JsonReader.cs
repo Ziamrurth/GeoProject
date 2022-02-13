@@ -7,23 +7,25 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GeoProject.Helpers {
-    class JsonReader {
-        public void LoadJson(string fileName)
+    public class JsonReader {
+        public static Polygon LoadJson(string fileName)
         {
             using (StreamReader r = new StreamReader(fileName))
             {
                 string json = r.ReadToEnd();
-                List<Polygon> polygons = JsonConvert.DeserializeObject<List<Polygon>>(json);
+                var res = JsonConvert.DeserializeObject<Polygon>(json);
+                Polygon polygon = JsonConvert.DeserializeObject<Polygon>(json);
+                return polygon;
             }
         }
     }
 
     public class Polygon {
         public string type;
-        public Features features;
+        public List<Feature> features;
     }
 
-    public class Features {
+    public class Feature {
         public string type;
         public Props properties;
         public Geometry geometry;
@@ -36,11 +38,6 @@ namespace GeoProject.Helpers {
 
     public class Geometry {
         public string type;
-        public Coordinates coordinates;
-    }
-
-    public class Coordinates {
-        public float x;
-        public float y;
+        public List<List<List<double>>> coordinates { get; set; }
     }
 }
