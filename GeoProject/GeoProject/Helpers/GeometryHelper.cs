@@ -32,15 +32,13 @@ namespace GeoProject.Helpers
         private static Coordinate EPSGConvert(double longitude, double latitude)
         {
             double coordX = (longitude * 180) / X;
-            //double coordY = ((Math.Atan(Math.Pow(E, ((Math.PI / 180) * latitude)))) / (Math.PI / 360)) - 90;
+            double coordY = latitude / (X / 180);
+            double exp = (Math.PI / 180) * coordY;
+            coordY = Math.Atan(Math.Pow(E, exp));
+            coordY = coordY / (Math.PI / 360);
+            coordY = coordY - 90;
 
-            double coordY1 = latitude / (X / 180);
-            double exp = (Math.PI / 180) * coordY1;
-            double coordY2 = Math.Atan(Math.Pow(E, exp));
-            double coordY3 = coordY2 / (Math.PI / 360);
-            double coordY4 = coordY3 - 90;
-
-            return new Coordinate(coordX, coordY4);
+            return new Coordinate(coordX, coordY);
         }
     }
 }
