@@ -32,7 +32,7 @@ namespace GeoProject {
             if (openFileDialog.ShowDialog() == true)
             {
                 var fileName = openFileDialog.FileName;
-                var res = JsonReader.LoadJson(fileName);
+                var res = JsonReader.LoadJson<Models.Polygon>(fileName);
             }
         }
     }
