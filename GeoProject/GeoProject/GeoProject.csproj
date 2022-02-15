@@ -90,7 +90,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Polygon.cs" />
+    <Compile Include="Models\LandPlot.cs" />
+    <Compile Include="Models\WasteHeap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

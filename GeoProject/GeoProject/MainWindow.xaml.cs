@@ -1,4 +1,5 @@
 ﻿using GeoProject.Helpers;
+using GeoProject.Models;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -32,8 +33,19 @@ namespace GeoProject {
             if (openFileDialog.ShowDialog() == true)
             {
                 var fileName = openFileDialog.FileName;
-                var modelPolygon = JsonReader.LoadJson<Models.Polygon>(fileName);
-                var geometryPolygon = GeometryHelper.GetPolygonFromModel(modelPolygon);
+                var modelWasteHeap = JsonReader.LoadJson<WasteHeap>(fileName);
+                var geometryWasteHeap = GeometryHelper.GetPolygonFromModel(modelWasteHeap);
+            }
+        }
+
+        private void btnLoadLandsInfo_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var fileName = openFileDialog.FileName;
+                var modelLandPlot = JsonReader.LoadJson<LandPlots>(fileName);
+                var geometryLandPlots = GeometryHelper.GetPolygonFromModel(modelLandPlot);
             }
         }
     }
