@@ -3,8 +3,6 @@ using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeoProject.Helpers
 {
@@ -23,8 +21,9 @@ namespace GeoProject.Helpers
             var geometryCoordinatesList = new List<Coordinate>();
             foreach (var modelPoint in modelPointsList)
             {
-                var geometryCoordinate = EPSGConvert(modelPoint[0], modelPoint[1]);
-                geometryCoordinatesList.Add(geometryCoordinate);
+                //var geometryCoordinate = EPSGConvert(modelPoint[0], modelPoint[1]);
+                //geometryCoordinatesList.Add(geometryCoordinate);
+                geometryCoordinatesList.Add(new Coordinate(modelPoint[0], modelPoint[1]));
             }
 
             return geometryFactory.CreatePolygon(geometryCoordinatesList.ToArray());
