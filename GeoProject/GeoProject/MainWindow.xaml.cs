@@ -5,6 +5,8 @@ using NetTopologySuite.Geometries;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using static GeoProject.Models.LandPlotInfo;
+
 namespace GeoProject
 {
     public partial class MainWindow : Window
@@ -61,6 +63,12 @@ namespace GeoProject
         {
             var lastBuffer = WasteHeapModel.Buffers.LastOrDefault();
             var landPlotsInRange = GetLandPlotsInsideBuffer(LandPlots, lastBuffer);
+
+            var landPlotsInfo = new List<LandPlotInfo>();
+            foreach (var landPlot in landPlotsInRange)
+            {
+                landPlotsInfo.Add(GetLandPlotInfo(landPlot, WasteHeapModel.Buffers));
+            }
         }
 
         private List<Polygon> GetLandPlotsInsideBuffer(List<Polygon> landPlots, Geometry buffer)
@@ -74,6 +82,43 @@ namespace GeoProject
             }
 
             return result;
+        }
+
+        private LandPlotInfo GetLandPlotInfo(Polygon landPlot, List<Geometry> buffers)
+        {
+            var landPlotPartsInfo = new List<LandPlotPartInfo>();
+
+            foreach (var buffer in buffers)
+            {
+                if (buffer.Contains(landPlot))
+                {
+                    // ToDo: check, if its contains in smaller buffer
+                    // ToDo: save buffer size
+                    landPlotPartsInfo.Add(
+                        new LandPlotPartInfo()
+                        {
+                            LandPart = landPlot,
+                            Area = landPlot.Area,
+                            AreaProportion = 1
+                        });
+                }else if (buffer.Intersects(landPlot))
+                {
+                    var landPart = landPlot.Difference(buffer);
+                    landPlotPartsInfo.Add(
+                        new LandPlotPartInfo()
+                        {
+                            LandPart = landPart,
+                            Area = landPart.Area,
+                            AreaProportion = landPart.Area/landPlot.Area
+                        });
+                }
+            }
+
+            return new LandPlotInfo()
+            {
+                LandPlot = landPlot,
+                LandPlotPartsInfo = landPlotPartsInfo
+            };
         }
     }
 }
