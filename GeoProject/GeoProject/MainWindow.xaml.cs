@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Media;
 using static GeoProject.Models.LandPlotInfo;
 using static GeoProject.Models.WasteHeapModel;
+using org.GraphDefined.OpenDataAPI.OverpassAPI;
 
 namespace GeoProject
 {
@@ -27,6 +28,8 @@ namespace GeoProject
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
         {
+            GetWasteHeap();
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
@@ -164,6 +167,12 @@ namespace GeoProject
                 : a * (180 / Math.PI);
 
             return (Direction)(int)(a / 22.1 + 1);
+        }
+
+        private void GetWasteHeap()
+        {
+            OverpassQuery query = new OverpassQuery(163847607);
+            var result = GeoJSONExtentions.ToGeoJSON(query);
         }
     }
 }

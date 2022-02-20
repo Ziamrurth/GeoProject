@@ -123,5 +123,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OverpassAPI-master\OverpassAPI.csproj">
+      <Project>{0669c189-2cdb-43a9-8f8e-7a5e6ebe1fee}</Project>
+      <Name>OverpassAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
