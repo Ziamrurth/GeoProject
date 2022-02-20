@@ -88,7 +88,7 @@ namespace GeoProject
             var landPlotsInfo = new List<LandPlotInfo>();
             foreach (var landPlot in landPlotsInRange)
             {
-                landPlotsInfo.Add(GetLandPlotInfo(landPlot, WasteHeapModel.BuffersInfo));
+                landPlotsInfo.Add(GetLandPlotInfo(landPlot, WasteHeapModel));
             }
         }
 
@@ -105,11 +105,11 @@ namespace GeoProject
             return result;
         }
 
-        private LandPlotInfo GetLandPlotInfo(Polygon landPlot, List<BufferInfo> buffersInfo)
+        private LandPlotInfo GetLandPlotInfo(Polygon landPlot, WasteHeapModel wasteHeapModel)
         {
             var landPlotPartsInfo = new List<LandPlotPartInfo>();
 
-            foreach (var bufferInfo in buffersInfo)
+            foreach (var bufferInfo in wasteHeapModel.BuffersInfo)
             {
                 if (bufferInfo.Buffer.Intersects(landPlot))
                 {
@@ -128,8 +128,32 @@ namespace GeoProject
             return new LandPlotInfo()
             {
                 LandPlot = landPlot,
+                Direction = GetLandPlotDirection(landPlot, wasteHeapModel.WasteHeap),
                 LandPlotPartsInfo = landPlotPartsInfo
             };
+        }
+
+        private Direction GetLandPlotDirection(Polygon landPlot, Polygon wasteHeap)
+        {
+            var wasteHeapCenter = wasteHeap.Centroid;
+            var landPlotCenter = landPlot.Centroid;
+
+            var dX = landPlotCenter.X - wasteHeapCenter.X;
+            var dY = landPlotCenter.Y - wasteHeapCenter.Y;
+
+            var r = Math.Atan(Math.Abs(dY / dX));
+
+            double a = 0;
+            if (dX >= 0 && dY >= 0)
+                a = r;
+            if (dX < 0 && dY >= 0)
+                a = 180 - r;
+            if (dX < 0 && dY < 0)
+                a = r + 180;
+            if (dX >= 0 && dY < 0)
+                a = 360 - r;
+
+            return (Direction)(int)(a / 22.1 + 1);
         }
     }
 }
