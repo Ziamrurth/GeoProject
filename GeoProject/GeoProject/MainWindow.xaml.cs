@@ -12,7 +12,9 @@ using System.Windows;
 using System.Windows.Media;
 using static GeoProject.Models.LandPlotInfo;
 using static GeoProject.Models.WasteHeapModel;
-using org.GraphDefined.OpenDataAPI.OverpassAPI;
+using System.Net;
+using System.IO;
+using GeoProject.Models.Json;
 
 namespace GeoProject
 {
@@ -28,19 +30,19 @@ namespace GeoProject
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
         {
-            GetWasteHeap();
+            GetWasteHeap(WasteHeap.Text);
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                var fileName = openFileDialog.FileName;
-                var modelWasteHeap = JsonReader.LoadJson<WasteHeap>(fileName);
-                var geometryWasteHeap = GeometryHelper.GetPolygonFromModel(modelWasteHeap);
-                WasteHeapModel = new WasteHeapModel()
-                {
-                    WasteHeap = geometryWasteHeap
-                };
-            }
+            //OpenFileDialog openFileDialog = new OpenFileDialog();
+            //if (openFileDialog.ShowDialog() == true)
+            //{
+            //    var fileName = openFileDialog.FileName;
+            //    var modelWasteHeap = JsonReader.LoadJson<WasteHeap>(fileName);
+            //    var geometryWasteHeap = GeometryHelper.GetPolygonFromModel(modelWasteHeap);
+            //    WasteHeapModel = new WasteHeapModel()
+            //    {
+            //        WasteHeap = geometryWasteHeap
+            //    };
+            //}
             btnOpenFile.Background = Brushes.Green;
         }
 
@@ -169,10 +171,26 @@ namespace GeoProject
             return (Direction)(int)(a / 22.1 + 1);
         }
 
-        private void GetWasteHeap()
+        private void GetWasteHeap(string line)
         {
-            OverpassQuery query = new OverpassQuery(163847607);
-            var result = GeoJSONExtentions.ToGeoJSON(query);
+            string url = $"http://overpass-api.de//api/interpreter?data=[out:json];way({line});out geom;";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.AutomaticDecompression = DecompressionMethods.GZip;
+
+            string httpResult;
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                httpResult = reader.ReadToEnd();
+            }
+
+            var wasteHeap = JsonReader.FromJson<WasteHeapOSM>(httpResult);
+            WasteHeapModel = new WasteHeapModel()
+            {
+                WasteHeap = GeometryHelper.GetPolygonFromModel(wasteHeap)
+            };
         }
     }
 }

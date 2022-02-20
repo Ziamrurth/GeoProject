@@ -1,4 +1,5 @@
 ﻿using GeoProject.Models;
+using GeoProject.Models.Json;
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,21 @@ namespace GeoProject.Helpers
                 //var geometryCoordinate = EPSGConvert(modelPoint[0], modelPoint[1]);
                 //geometryCoordinatesList.Add(geometryCoordinate);
                 geometryCoordinatesList.Add(new Coordinate(modelPoint[1], modelPoint[0]));
+            }
+
+            return geometryFactory.CreatePolygon(geometryCoordinatesList.ToArray());
+        }
+
+        public static Polygon GetPolygonFromModel(WasteHeapOSM model)
+        {
+            var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
+
+            var modelPointsList = model.elements.FirstOrDefault().geometry;
+
+            var geometryCoordinatesList = new List<Coordinate>();
+            foreach (var modelPoint in modelPointsList)
+            {
+                geometryCoordinatesList.Add(new Coordinate(modelPoint.lat, modelPoint.lon));
             }
 
             return geometryFactory.CreatePolygon(geometryCoordinatesList.ToArray());

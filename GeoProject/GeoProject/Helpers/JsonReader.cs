@@ -12,5 +12,10 @@ namespace GeoProject.Helpers
                 return JsonConvert.DeserializeObject<T>(json);
             }
         }
+
+        public static T FromJson<T>(string json)
+        {
+            return JsonConvert.DeserializeObject<T>(json);
+        }
     }
 }
