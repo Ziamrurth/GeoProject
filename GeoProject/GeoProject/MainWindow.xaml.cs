@@ -114,7 +114,15 @@ namespace GeoProject
                 AreaProportion = p.AreaProportion
             }));
 
-            CsvSaveHelper.SaveToCsv(result, "result.csv");
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV file (.csv)|.csv| All Files (.)|.";
+            saveFileDialog.FileName = "result";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                
+                CsvSaveHelper.SaveToCsv(result, saveFileDialog.FileName);
+            }
+
             btnProcess.Background = Brushes.Green;
         }
 
