@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GeoProject.Models.WasteHeapModel;
 
 namespace GeoProject.Models
 {
@@ -15,7 +16,7 @@ namespace GeoProject.Models
         public class LandPlotPartInfo
         {
             public Geometry LandPart { get; set; }
-            public double BufferSize { get; set; }
+            public BufferInfo BufferInfo { get; set; }
             public double Area { get; set; }
             public double AreaProportion { get; set; }
         }

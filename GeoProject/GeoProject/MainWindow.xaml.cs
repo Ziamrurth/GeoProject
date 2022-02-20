@@ -2,10 +2,12 @@
 using GeoProject.Models;
 using Microsoft.Win32;
 using NetTopologySuite.Geometries;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using static GeoProject.Models.LandPlotInfo;
+using static GeoProject.Models.WasteHeapModel;
 
 namespace GeoProject
 {
@@ -48,26 +50,45 @@ namespace GeoProject
 
         private void btnAddBuffers_Click(object sender, RoutedEventArgs e)
         {
-            WasteHeapModel.Buffers = new List<Geometry>();
+            string[] buffersSize = Buffers.Text.Split(';');
+            double[] buffersSizeValues = new double[buffersSize.Length];
 
-            string[] buffers = Buffers.Text.Split(';');
-            foreach (var buffer in buffers)
+            for (int i = 0; i < buffersSize.Length; i++)
             {
-                var bufferSize = double.Parse(buffer)*0.00001;
-                WasteHeapModel.Buffers.Add(
-                    WasteHeapModel.WasteHeap.Buffer(bufferSize));
+                buffersSizeValues[i] = double.Parse(buffersSize[i]) * 0.00001;
             }
+            buffersSizeValues = buffersSizeValues.Distinct().ToArray();
+            Array.Sort(buffersSizeValues);
+
+            var buffersInfo = new List<BufferInfo>();
+            for (int i = 0; i < buffersSizeValues.Length; i++)
+            {
+                buffersInfo.Add(
+                    new BufferInfo
+                    {
+                        Buffer = WasteHeapModel.WasteHeap.Buffer(buffersSizeValues[i]),
+                        To = buffersSizeValues[i],
+                        From = i == 0 ? 0 : buffersSizeValues[i - 1]
+                    });
+            }
+
+            for (int i = buffersSizeValues.Length - 1; i > 0; i--)
+            {
+                buffersInfo[i].Buffer = buffersInfo[i].Buffer.Difference(buffersInfo[i - 1].Buffer);
+            }
+
+            WasteHeapModel.BuffersInfo = buffersInfo;
         }
 
         private void btnProcess_Click(object sender, RoutedEventArgs e)
         {
-            var lastBuffer = WasteHeapModel.Buffers.LastOrDefault();
+            var lastBuffer = WasteHeapModel.WasteHeap.Buffer(WasteHeapModel.BuffersInfo.LastOrDefault().To);
             var landPlotsInRange = GetLandPlotsInsideBuffer(LandPlots, lastBuffer);
 
             var landPlotsInfo = new List<LandPlotInfo>();
             foreach (var landPlot in landPlotsInRange)
             {
-                landPlotsInfo.Add(GetLandPlotInfo(landPlot, WasteHeapModel.Buffers));
+                landPlotsInfo.Add(GetLandPlotInfo(landPlot, WasteHeapModel.BuffersInfo));
             }
         }
 
@@ -84,32 +105,22 @@ namespace GeoProject
             return result;
         }
 
-        private LandPlotInfo GetLandPlotInfo(Polygon landPlot, List<Geometry> buffers)
+        private LandPlotInfo GetLandPlotInfo(Polygon landPlot, List<BufferInfo> buffersInfo)
         {
             var landPlotPartsInfo = new List<LandPlotPartInfo>();
 
-            foreach (var buffer in buffers)
+            foreach (var bufferInfo in buffersInfo)
             {
-                if (buffer.Contains(landPlot))
+                if (bufferInfo.Buffer.Intersects(landPlot))
                 {
-                    // ToDo: check, if its contains in smaller buffer
-                    // ToDo: save buffer size
-                    landPlotPartsInfo.Add(
-                        new LandPlotPartInfo()
-                        {
-                            LandPart = landPlot,
-                            Area = landPlot.Area,
-                            AreaProportion = 1
-                        });
-                }else if (buffer.Intersects(landPlot))
-                {
-                    var landPart = landPlot.Difference(buffer);
+                    var landPart = landPlot.Intersection(bufferInfo.Buffer);
                     landPlotPartsInfo.Add(
                         new LandPlotPartInfo()
                         {
                             LandPart = landPart,
+                            BufferInfo = bufferInfo,
                             Area = landPart.Area,
-                            AreaProportion = landPart.Area/landPlot.Area
+                            AreaProportion = landPart.Area / landPlot.Area
                         });
                 }
             }
