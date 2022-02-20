@@ -4,10 +4,12 @@ using GeoProject.Models.CSV;
 using Microsoft.Win32;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using Geometry = NetTopologySuite.Geometries.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using static GeoProject.Models.LandPlotInfo;
 using static GeoProject.Models.WasteHeapModel;
 
@@ -36,6 +38,7 @@ namespace GeoProject
                     WasteHeap = geometryWasteHeap
                 };
             }
+            btnOpenFile.Background = Brushes.Green;
         }
 
         private void btnLoadLandsInfo_Click(object sender, RoutedEventArgs e)
@@ -48,6 +51,7 @@ namespace GeoProject
                 var geometryLandPlots = GeometryHelper.GetLandPlotsInfoFromModel(modelLandPlot);
                 LandPlotsInfo = geometryLandPlots;
             }
+            btnLoadLandsInfo.Background = Brushes.Green;
         }
 
         private void btnAddBuffers_Click(object sender, RoutedEventArgs e)
@@ -80,6 +84,7 @@ namespace GeoProject
             }
 
             WasteHeapModel.BuffersInfo = buffersInfo;
+            btnAddBuffers.Background = Brushes.Green;
         }
 
         private void btnProcess_Click(object sender, RoutedEventArgs e)
@@ -105,6 +110,7 @@ namespace GeoProject
             }));
 
             CsvSaveHelper.SaveToCsv(result, "result.csv");
+            btnProcess.Background = Brushes.Green;
         }
 
         private List<LandPlotInfo> GetLandPlotsInsideBuffer(List<LandPlotInfo> landPlotsInfo, Geometry buffer)
