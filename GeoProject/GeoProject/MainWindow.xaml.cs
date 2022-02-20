@@ -1,6 +1,8 @@
 ﻿using GeoProject.Helpers;
 using GeoProject.Models;
+using GeoProject.Models.CSV;
 using Microsoft.Win32;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,7 @@ namespace GeoProject
     public partial class MainWindow : Window
     {
         public WasteHeapModel WasteHeapModel { get; set; }
-        public List<Polygon> LandPlots { get; set; }
+        public List<LandPlotInfo> LandPlotsInfo { get; set; }
 
         public MainWindow()
         {
@@ -43,8 +45,8 @@ namespace GeoProject
             {
                 var fileName = openFileDialog.FileName;
                 var modelLandPlot = JsonReader.LoadJson<LandPlots>(fileName);
-                var geometryLandPlots = GeometryHelper.GetPolygonFromModel(modelLandPlot);
-                LandPlots = geometryLandPlots;
+                var geometryLandPlots = GeometryHelper.GetLandPlotsInfoFromModel(modelLandPlot);
+                LandPlotsInfo = geometryLandPlots;
             }
         }
 
@@ -83,54 +85,66 @@ namespace GeoProject
         private void btnProcess_Click(object sender, RoutedEventArgs e)
         {
             var lastBuffer = WasteHeapModel.WasteHeap.Buffer(WasteHeapModel.BuffersInfo.LastOrDefault().To);
-            var landPlotsInRange = GetLandPlotsInsideBuffer(LandPlots, lastBuffer);
+            var landPlotsInRange = GetLandPlotsInsideBuffer(LandPlotsInfo, lastBuffer);
 
             var landPlotsInfo = new List<LandPlotInfo>();
             foreach (var landPlot in landPlotsInRange)
             {
                 landPlotsInfo.Add(GetLandPlotInfo(landPlot, WasteHeapModel));
             }
+
+            IEnumerable<LandPlotInfoCsv> result = landPlotsInfo.SelectMany(i => i.LandPlotPartsInfo
+            .Select(p => new LandPlotInfoCsv()
+            {
+                CadastralNumber = i.cadastralNumber,
+                //Area = i.LandPlot.Area * 10000000000,
+                Direction = i.Direction.ToString(),
+                BufferRange = $"{p.BufferInfo.From * 100000} - {p.BufferInfo.To * 100000}",
+                //AreaPart = p.Area * 10000000000,
+                AreaProportion = p.AreaProportion
+            }));
+
+            CsvSaveHelper.SaveToCsv(result, "result.csv");
         }
 
-        private List<Polygon> GetLandPlotsInsideBuffer(List<Polygon> landPlots, Geometry buffer)
+        private List<LandPlotInfo> GetLandPlotsInsideBuffer(List<LandPlotInfo> landPlotsInfo, Geometry buffer)
         {
-            var result = new List<Polygon>();
+            var result = new List<LandPlotInfo>();
 
-            foreach (var landPlot in landPlots)
+            foreach (var landPlot in landPlotsInfo)
             {
-                if (buffer.Intersects(landPlot))
+                if (buffer.Intersects(landPlot.LandPlot))
                     result.Add(landPlot);
             }
 
             return result;
         }
 
-        private LandPlotInfo GetLandPlotInfo(Polygon landPlot, WasteHeapModel wasteHeapModel)
+        private LandPlotInfo GetLandPlotInfo(LandPlotInfo landPlotInfo, WasteHeapModel wasteHeapModel)
         {
             var landPlotPartsInfo = new List<LandPlotPartInfo>();
 
             foreach (var bufferInfo in wasteHeapModel.BuffersInfo)
             {
-                if (bufferInfo.Buffer.Intersects(landPlot))
+                if (bufferInfo.Buffer.Intersects(landPlotInfo.LandPlot))
                 {
-                    var landPart = landPlot.Intersection(bufferInfo.Buffer);
+                    var landPart = landPlotInfo.LandPlot.Intersection(bufferInfo.Buffer);
                     landPlotPartsInfo.Add(
                         new LandPlotPartInfo()
                         {
                             LandPart = landPart,
                             BufferInfo = bufferInfo,
                             Area = landPart.Area,
-                            AreaProportion = landPart.Area / landPlot.Area
+                            AreaProportion = landPart.Area / landPlotInfo.LandPlot.Area
                         });
                 }
             }
 
-            return new LandPlotInfo()
-            {
-                LandPlot = landPlot,
-                Direction = GetLandPlotDirection(landPlot, wasteHeapModel.WasteHeap),
-                LandPlotPartsInfo = landPlotPartsInfo
-            };
+
+            landPlotInfo.Direction = GetLandPlotDirection(landPlotInfo.LandPlot, wasteHeapModel.WasteHeap);
+            landPlotInfo.LandPlotPartsInfo = landPlotPartsInfo;
+
+            return landPlotInfo;
         }
 
         private Direction GetLandPlotDirection(Polygon landPlot, Polygon wasteHeap)
@@ -138,20 +152,10 @@ namespace GeoProject
             var wasteHeapCenter = wasteHeap.Centroid;
             var landPlotCenter = landPlot.Centroid;
 
-            var dX = landPlotCenter.X - wasteHeapCenter.X;
-            var dY = landPlotCenter.Y - wasteHeapCenter.Y;
-
-            var r = Math.Atan(Math.Abs(dY / dX));
-
-            double a = 0;
-            if (dX >= 0 && dY >= 0)
-                a = r;
-            if (dX < 0 && dY >= 0)
-                a = 180 - r;
-            if (dX < 0 && dY < 0)
-                a = r + 180;
-            if (dX >= 0 && dY < 0)
-                a = 360 - r;
+            var a = AngleUtility.Angle(wasteHeapCenter.Coordinate, landPlotCenter.Coordinate);
+            a = a < 0
+                ? 360 + a * (180 / Math.PI)
+                : a * (180 / Math.PI);
 
             return (Direction)(int)(a / 22.1 + 1);
         }

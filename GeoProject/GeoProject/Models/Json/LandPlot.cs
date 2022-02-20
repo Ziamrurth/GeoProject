@@ -10,6 +10,7 @@ namespace GeoProject.Models
         public class Feature
         {
             public string type { get; set; }
+            public Property properties { get; set; }
             public Geometry geometry { get; set; }
         }
 
@@ -17,6 +18,11 @@ namespace GeoProject.Models
         {
             public string type { get; set; }
             public List<List<List<List<double>>>> coordinates { get; set; }
+        }
+
+        public class Property
+        {
+            public string cn { get; set; }
         }
     }
 }

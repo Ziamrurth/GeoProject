@@ -11,6 +11,7 @@ namespace GeoProject.Models
     public class LandPlotInfo
     {
         public Polygon LandPlot { get; set; }
+        public string cadastralNumber { get; set; }
         public Direction Direction { get; set; }
         public List<LandPlotPartInfo> LandPlotPartsInfo { get; set; }
 

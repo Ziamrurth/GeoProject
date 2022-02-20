@@ -23,17 +23,17 @@ namespace GeoProject.Helpers
             {
                 //var geometryCoordinate = EPSGConvert(modelPoint[0], modelPoint[1]);
                 //geometryCoordinatesList.Add(geometryCoordinate);
-                geometryCoordinatesList.Add(new Coordinate(modelPoint[0], modelPoint[1]));
+                geometryCoordinatesList.Add(new Coordinate(modelPoint[1], modelPoint[0]));
             }
 
             return geometryFactory.CreatePolygon(geometryCoordinatesList.ToArray());
         }
 
-        public static List<Polygon> GetPolygonFromModel(LandPlots model)
+        public static List<LandPlotInfo> GetLandPlotsInfoFromModel(LandPlots model)
         {
             var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
 
-            var polygonsList = new List<Polygon>();
+            var landPlotsInfo = new List<LandPlotInfo>();
 
             foreach (var modelItem in model.features)
             {
@@ -43,15 +43,19 @@ namespace GeoProject.Helpers
 
                 foreach (var modelPoint in modelPointsList)
                 {
-                    var geometryCoordinate = new Coordinate(modelPoint[0], modelPoint[1]);
+                    var geometryCoordinate = new Coordinate(modelPoint[1], modelPoint[0]);
                     geometryCoordinatesList.Add(geometryCoordinate);
                 }
 
                 var polygonGeometry = geometryFactory.CreatePolygon(geometryCoordinatesList.ToArray());
-                polygonsList.Add(polygonGeometry);
+                landPlotsInfo.Add(new LandPlotInfo()
+                {
+                    LandPlot = polygonGeometry,
+                    cadastralNumber = modelItem.properties.cn
+                }); ;
             }
 
-            return polygonsList;
+            return landPlotsInfo;
         }
 
         private static Coordinate EPSGConvert(double longitude, double latitude)
