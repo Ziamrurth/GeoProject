@@ -9,6 +9,7 @@ namespace GeoProject.Models.CSV
     class LandPlotInfoCsv
     {
         public string CadastralNumber { get; set; }
+        public string WasteHeap { get; set; }
         //public double Area { get; set; }
         public string Direction { get; set; }
         public string BufferRange { get; set; }

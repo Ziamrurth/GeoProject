@@ -6,6 +6,7 @@ namespace GeoProject.Models
     public class WasteHeapModel
     {
         public Polygon WasteHeap { get; set; }
+        public string Name { get; set; }
         public List<BufferInfo> BuffersInfo { get; set; }
 
         public class BufferInfo

@@ -23,12 +23,6 @@ namespace GeoProject.Helpers
             {
                 return reader.ReadToEnd();
             }
-
-            //var wasteHeap = JsonHelper.FromJson<WasteHeapOSM>(httpResult);
-            //WasteHeapModel = new WasteHeapModel()
-            //{
-            //    WasteHeap = GeometryHelper.GetPolygonFromModel(wasteHeap)
-            //};
         }
     }
 }

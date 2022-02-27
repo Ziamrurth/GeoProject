@@ -20,6 +20,16 @@
             </WrapPanel>
 
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <TextBlock FontSize="16">Загрузить несколько терриконов</TextBlock>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="btnWasteHeapFromOSMMultiple" Click="btnWasteHeapFromOSMMultiple_Click" Margin="10">Из OSM</Button>
+                    <Button Name="btnWasteHeapFromJsonMultiple" Click="btnWasteHeapFromJsonMultiple_Click" Margin="10">Из Json</Button>
+                </StackPanel>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
                 <StackPanel Orientation="Horizontal">
                     <TextBox Name="Buffers" Margin="5" Width="100"/>
                     <Button Name="btnAddBuffers" Click="btnAddBuffers_Click" Margin="10">Задать буферные зоны</Button>
