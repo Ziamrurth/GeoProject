@@ -2,7 +2,7 @@
 
 namespace GeoProject.Models
 {
-    public class WasteHeap
+    public class WasteHeapJson
     {
         public string type;
         public List<Feature> features;

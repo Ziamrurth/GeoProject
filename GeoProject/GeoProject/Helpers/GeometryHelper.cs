@@ -12,7 +12,7 @@ namespace GeoProject.Helpers
         private const double E = 2.7182818284;
         private const double X = 20037508.34;
 
-        public static Polygon GetPolygonFromModel(WasteHeap model)
+        public static Polygon GetPolygonFromModel(WasteHeapJson model)
         {
             var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
 
@@ -72,6 +72,13 @@ namespace GeoProject.Helpers
             }
 
             return landPlotsInfo;
+        }
+
+        private static Coordinate EpgsConvertTo(string epgs)
+        {
+
+
+            return null;
         }
 
         private static Coordinate EPSGConvert(double longitude, double latitude)

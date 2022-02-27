@@ -28,22 +28,31 @@ namespace GeoProject
             InitializeComponent();
         }
 
-        private void btnOpenFile_Click(object sender, RoutedEventArgs e)
+        private void btnWasteHeapFromOSM_Click(object sender, RoutedEventArgs e)
         {
-            GetWasteHeap(WasteHeap.Text);
+            string wasteHeapJson = OverpassHelper.GetJsonById(WasteHeap.Text);
+            var wasteHeap = JsonHelper.FromJson<WasteHeapOSM>(wasteHeapJson);
+            WasteHeapModel = new WasteHeapModel()
+            {
+                WasteHeap = GeometryHelper.GetPolygonFromModel(wasteHeap)
+            };
+            btnWasteHeapFromOSM.Background = Brushes.Green;
+        }
 
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-            //if (openFileDialog.ShowDialog() == true)
-            //{
-            //    var fileName = openFileDialog.FileName;
-            //    var modelWasteHeap = JsonReader.LoadJson<WasteHeap>(fileName);
-            //    var geometryWasteHeap = GeometryHelper.GetPolygonFromModel(modelWasteHeap);
-            //    WasteHeapModel = new WasteHeapModel()
-            //    {
-            //        WasteHeap = geometryWasteHeap
-            //    };
-            //}
-            btnOpenFile.Background = Brushes.Green;
+        private void btnWasteHeapFromJson_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var fileName = openFileDialog.FileName;
+                var modelWasteHeap = JsonHelper.LoadJson<WasteHeapJson>(fileName);
+                var geometryWasteHeap = GeometryHelper.GetPolygonFromModel(modelWasteHeap);
+                WasteHeapModel = new WasteHeapModel()
+                {
+                    WasteHeap = geometryWasteHeap
+                };
+            }
+            btnWasteHeapFromJson.Background = Brushes.Green;
         }
 
         private void btnLoadLandsInfo_Click(object sender, RoutedEventArgs e)
@@ -52,7 +61,7 @@ namespace GeoProject
             if (openFileDialog.ShowDialog() == true)
             {
                 var fileName = openFileDialog.FileName;
-                var modelLandPlot = JsonReader.LoadJson<LandPlots>(fileName);
+                var modelLandPlot = JsonHelper.LoadJson<LandPlots>(fileName);
                 var geometryLandPlots = GeometryHelper.GetLandPlotsInfoFromModel(modelLandPlot);
                 LandPlotsInfo = geometryLandPlots;
             }
@@ -177,28 +186,6 @@ namespace GeoProject
                 : a * (180 / Math.PI);
 
             return (Direction)(int)(a / 22.1 + 1);
-        }
-
-        private void GetWasteHeap(string line)
-        {
-            string url = $"http://overpass-api.de//api/interpreter?data=[out:json];way({line});out geom;";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.AutomaticDecompression = DecompressionMethods.GZip;
-
-            string httpResult;
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                httpResult = reader.ReadToEnd();
-            }
-
-            var wasteHeap = JsonReader.FromJson<WasteHeapOSM>(httpResult);
-            WasteHeapModel = new WasteHeapModel()
-            {
-                WasteHeap = GeometryHelper.GetPolygonFromModel(wasteHeap)
-            };
         }
     }
 }

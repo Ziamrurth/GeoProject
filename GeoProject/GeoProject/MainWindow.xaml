@@ -9,9 +9,13 @@
     <Grid>
         <DockPanel Margin="10">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <TextBlock FontSize="16">Загрузить террикон</TextBlock>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
                 <StackPanel Orientation="Horizontal">
                     <TextBox Name="WasteHeap" Margin="5" Width="100"/>
-                    <Button Name="btnOpenFile" Click="btnOpenFile_Click" Margin="10">Загрузить террикон</Button>
+                    <Button Name="btnWasteHeapFromOSM" Click="btnWasteHeapFromOSM_Click" Margin="10">Из OSM</Button>
+                    <Button Name="btnWasteHeapFromJson" Click="btnWasteHeapFromJson_Click" Margin="10">Из Json</Button>
                 </StackPanel>
             </WrapPanel>
 
