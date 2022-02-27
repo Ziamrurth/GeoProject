@@ -22,9 +22,14 @@ namespace GeoProject.Helpers
             var geometryCoordinatesList = new List<Coordinate>();
             foreach (var modelPoint in modelPointsList)
             {
+                var coordinates = EpsgConvert(modelPoint[0], modelPoint[1]);
+                var geometryCoordinate = new Coordinate(coordinates.y, coordinates.x);
+                geometryCoordinatesList.Add(geometryCoordinate);
+
                 //var geometryCoordinate = EPSGConvert(modelPoint[0], modelPoint[1]);
                 //geometryCoordinatesList.Add(geometryCoordinate);
-                geometryCoordinatesList.Add(new Coordinate(modelPoint[1], modelPoint[0]));
+
+                //geometryCoordinatesList.Add(new Coordinate(modelPoint[1], modelPoint[0]));
             }
 
             return geometryFactory.CreatePolygon(geometryCoordinatesList.ToArray());
@@ -74,23 +79,27 @@ namespace GeoProject.Helpers
             return landPlotsInfo;
         }
 
-        private static Coordinate EpgsConvertTo(string epgs)
+        private static (double x, double y) EpsgConvert(double x, double y)
         {
+            var epsg3857ProjectedCoordinateSystem = ProjNet.CoordinateSystems.ProjectedCoordinateSystem.WebMercator;
+            var epsg4326GeographicCoordinateSystem = ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84;
 
+            var coordinateTransformationFactory = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory();
+            var coordinateTransformation = coordinateTransformationFactory.CreateFromCoordinateSystems(epsg3857ProjectedCoordinateSystem, epsg4326GeographicCoordinateSystem);
 
-            return null;
+            return coordinateTransformation.MathTransform.Transform(x, y);
         }
 
-        private static Coordinate EPSGConvert(double longitude, double latitude)
-        {
-            double coordX = (longitude * 180) / X;
-            double coordY = latitude / (X / 180);
-            double exp = (Math.PI / 180) * coordY;
-            coordY = Math.Atan(Math.Pow(E, exp));
-            coordY = coordY / (Math.PI / 360);
-            coordY = coordY - 90;
+        //private static Coordinate EpsgConvert(double longitude, double latitude)
+        //{
+        //    double coordX = (longitude * 180) / X;
+        //    double coordY = latitude / (X / 180);
+        //    double exp = (Math.PI / 180) * coordY;
+        //    coordY = Math.Atan(Math.Pow(E, exp));
+        //    coordY = coordY / (Math.PI / 360);
+        //    coordY = coordY - 90;
 
-            return new Coordinate(coordX, coordY);
-        }
+        //    return new Coordinate(coordX, coordY);
+        //}
     }
 }
