@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace GeoProject.Helpers
 {
@@ -17,7 +18,7 @@ namespace GeoProject.Helpers
                 row => string.Join(";", header.Split(';').Select(
                     a => row.GetType().GetProperty(a).GetValue(row, null))));
             lines.AddRange(valueLines);
-            File.WriteAllLines(path, lines.ToArray());
+            File.WriteAllLines(path, lines.ToArray(), Encoding.GetEncoding("Windows-1251"));
         }
     }
 }
