@@ -14,7 +14,7 @@ namespace GeoProject.Helpers
 
         public static Polygon GetPolygonFromModel(WasteHeapJson model)
         {
-            var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
+            var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(3857);
 
             var modelPointsList = model.features.First()
                 .geometry.coordinates.First();
@@ -24,6 +24,7 @@ namespace GeoProject.Helpers
             {
                 var coordinates = EpsgConvert(modelPoint[0], modelPoint[1]);
                 var geometryCoordinate = new Coordinate(coordinates.y, coordinates.x);
+                //var geometryCoordinate = new Coordinate(modelPoint[0], modelPoint[1]);
                 geometryCoordinatesList.Add(geometryCoordinate);
 
                 //var geometryCoordinate = EPSGConvert(modelPoint[0], modelPoint[1]);

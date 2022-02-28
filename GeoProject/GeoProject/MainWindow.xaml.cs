@@ -133,6 +133,7 @@ namespace GeoProject
             for (int i = 0; i < buffersSize.Length; i++)
             {
                 buffersSizeValues[i] = double.Parse(buffersSize[i]) * 0.00001;
+                //buffersSizeValues[i] = double.Parse(buffersSize[i]);
             }
             buffersSizeValues = buffersSizeValues.Distinct().ToArray();
             Array.Sort(buffersSizeValues);
@@ -158,6 +159,8 @@ namespace GeoProject
 
                 wasteHeapModel.BuffersInfo = buffersInfo;
             }
+
+            //CsvSaveHelper.TestSave(WasteHeapsModels.FirstOrDefault().BuffersInfo.FirstOrDefault().Buffer.Coordinates);
 
             btnAddBuffers.Background = Brushes.Green;
         }

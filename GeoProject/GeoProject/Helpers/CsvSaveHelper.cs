@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using NetTopologySuite.Geometries;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static GeoProject.Models.WasteHeapModel;
 
 namespace GeoProject.Helpers
 {
@@ -19,6 +21,16 @@ namespace GeoProject.Helpers
                     a => row.GetType().GetProperty(a).GetValue(row, null))));
             lines.AddRange(valueLines);
             File.WriteAllLines(path, lines.ToArray(), Encoding.GetEncoding("Windows-1251"));
+        }
+
+        public static void TestSave(Coordinate[] bufferInfo)
+        {
+            string res = "";
+            foreach (var coord in bufferInfo)
+            {
+                res += $"[{coord.X.ToString().Replace(',', '.')},{coord.Y.ToString().Replace(',', '.')}],";
+            }
+            File.WriteAllText("result.txt", res, Encoding.GetEncoding("Windows-1251"));
         }
     }
 }
