@@ -129,6 +129,7 @@
     <Compile Include="Models\Json\WasteHeapJson.cs" />
     <Compile Include="Models\Json\WasteHeapOSM.cs" />
     <Compile Include="Models\LandPlotInfo.cs" />
+    <Compile Include="Models\WasteHeapIntersection.cs" />
     <Compile Include="Models\WasteHeapModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

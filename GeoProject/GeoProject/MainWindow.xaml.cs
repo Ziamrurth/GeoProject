@@ -168,7 +168,104 @@ namespace GeoProject
         private void btnProcess_Click(object sender, RoutedEventArgs e)
         {
             var landPlotsInfo = new List<LandPlotInfo>();
-            foreach (var wasteHeapModel in WasteHeapsModels)
+
+            // Разделение терриконов на пересекающиеся и одиночные
+            var wasteHeapsIntersects = new List<WasteHeapModel>();
+            for (int i = 0; i < WasteHeapsModels.Count - 1; i++)
+            {
+                for (int j = i + 1; j < WasteHeapsModels.Count; j++)
+                {
+                    var maxBufferI = WasteHeapsModels[i].WasteHeap.Buffer(WasteHeapsModels[i].BuffersInfo.LastOrDefault().To);
+                    var maxBufferJ = WasteHeapsModels[j].WasteHeap.Buffer(WasteHeapsModels[j].BuffersInfo.LastOrDefault().To);
+                    if (maxBufferI.Intersects(maxBufferJ))
+                    {
+                        wasteHeapsIntersects.Add(WasteHeapsModels[i]);
+                        wasteHeapsIntersects.Add(WasteHeapsModels[j]);
+                    }
+                }
+            }
+            wasteHeapsIntersects = wasteHeapsIntersects.GroupBy(w => w)
+                .SelectMany(x => x).ToList();
+            var wasteHeapsSingle = WasteHeapsModels.Where(x => !wasteHeapsIntersects.Contains(x)).ToList();
+
+            // ToDo: Обработка случая для пересекающихся терриконов
+
+            //Поиск пересечений буферов
+            var wasteHeapIntersections = new List<WasteHeapIntersection>();
+            for (int i = 0; i < wasteHeapsIntersects.Count - 1; i++)
+            {
+                for (int j = i + 1; j < wasteHeapsIntersects.Count; j++)
+                {
+                    var bufferListI = WasteHeapsModels[i].BuffersInfo;
+                    var bufferListJ = WasteHeapsModels[j].BuffersInfo;
+
+                    foreach (var bufferI in bufferListI)
+                    {
+                        foreach (var bufferJ in bufferListJ)
+                        {
+                            if (bufferI.Buffer.Intersects(bufferJ.Buffer))
+                            {
+                                var intersection = bufferI.Buffer.Intersection(bufferJ.Buffer);
+                                var intersectionIndex = wasteHeapIntersections.Count;
+                                wasteHeapIntersections.Add(new WasteHeapIntersection()
+                                {
+                                    Segment = intersection,
+                                    IntersectionIndex = intersectionIndex + 1,
+                                    WasteHeapModel = wasteHeapsIntersects[i],
+                                    BufferIndex = wasteHeapsIntersects[i].BuffersInfo.IndexOf(bufferI)
+                                });
+                                wasteHeapIntersections.Add(new WasteHeapIntersection()
+                                {
+                                    Segment = intersection,
+                                    IntersectionIndex = intersectionIndex + 1,
+                                    WasteHeapModel = wasteHeapsIntersects[j],
+                                    BufferIndex = wasteHeapsIntersects[j].BuffersInfo.IndexOf(bufferJ)
+                                });
+
+
+                            }
+
+                            // Убрать из всех буферов пересечения
+                            var buffer = bufferI.Buffer
+                                .Difference(WasteHeapsModels[i].WasteHeap
+                                .Buffer(WasteHeapsModels[i].BuffersInfo.LastOrDefault().To));
+                            wasteHeapIntersections.Add(new WasteHeapIntersection()
+                            {
+                                Segment = buffer,
+                                IntersectionIndex = 0,
+                                WasteHeapModel = wasteHeapsIntersects[i],
+                                BufferIndex = wasteHeapsIntersects[i].BuffersInfo.IndexOf(bufferI)
+                            });
+                        }
+                    }
+                }
+            }
+
+            // Обработка участков, попавших в пересечение буферов
+            List<LandPlotInfoCsv> resultIntersection = new List<LandPlotInfoCsv>();
+            foreach (var landPlot in LandPlotsInfo)
+            {
+                foreach (var intersection in wasteHeapIntersections)
+                {
+                    if (landPlot.LandPlot.Intersects(intersection.Segment))
+                    {
+                        var buffer = intersection.WasteHeapModel.BuffersInfo[intersection.BufferIndex];
+                        var landPlotIntersection = landPlot.LandPlot.Intersection(intersection.Segment);
+                        resultIntersection.Add(new LandPlotInfoCsv()
+                        {
+                            CadastralNumber = landPlot.CadastralNumber,
+                            WasteHeap = intersection.WasteHeapModel.Name,
+                            Direction = GetLandPlotDirection(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
+                            BufferRange = $"{buffer.From * 100000} - {buffer.To * 100000}",
+                            AreaProportion = landPlotIntersection.Area / landPlot.LandPlot.Area,
+                            IntersectionIndex = intersection.IntersectionIndex
+                        });
+                    }
+                }
+            }
+
+            // Обработка одиночных полигонов
+            foreach (var wasteHeapModel in wasteHeapsSingle)
             {
                 var lastBuffer = wasteHeapModel.WasteHeap.Buffer(wasteHeapModel.BuffersInfo.LastOrDefault().To);
                 var landPlotsInRange = GetLandPlotsInsideBuffer(LandPlotsInfo, lastBuffer);
@@ -179,24 +276,26 @@ namespace GeoProject
                 }
             }
 
-            IEnumerable<LandPlotInfoCsv> result = landPlotsInfo.SelectMany(landPlotInfo => landPlotInfo.LandPlotPartsInfo
+            List<LandPlotInfoCsv> result = landPlotsInfo.SelectMany(landPlotInfo => landPlotInfo.LandPlotPartsInfo
             .Select(landPlotPartInfo => new LandPlotInfoCsv()
             {
-                CadastralNumber = landPlotInfo.cadastralNumber,
+                CadastralNumber = landPlotInfo.CadastralNumber,
                 WasteHeap = landPlotPartInfo.WasteHeap,
                 //Area = i.LandPlot.Area * 10000000000,
                 Direction = landPlotInfo.Direction.ToString(),
                 BufferRange = $"{landPlotPartInfo.BufferInfo.From * 100000} - {landPlotPartInfo.BufferInfo.To * 100000}",
                 //AreaPart = p.Area * 10000000000,
                 AreaProportion = landPlotPartInfo.AreaProportion
-            }));
+            })).ToList();
+
+            result.AddRange(resultIntersection);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "CSV file (.csv)|.csv| All Files (.)|.";
             saveFileDialog.FileName = "result";
             if (saveFileDialog.ShowDialog() == true)
             {
-                
+
                 CsvSaveHelper.SaveToCsv(result, saveFileDialog.FileName);
             }
 

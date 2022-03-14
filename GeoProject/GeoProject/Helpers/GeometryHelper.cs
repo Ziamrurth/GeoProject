@@ -73,7 +73,7 @@ namespace GeoProject.Helpers
                 landPlotsInfo.Add(new LandPlotInfo()
                 {
                     LandPlot = polygonGeometry,
-                    cadastralNumber = modelItem.properties.cn
+                    CadastralNumber = modelItem.properties.cn
                 }); ;
             }
 

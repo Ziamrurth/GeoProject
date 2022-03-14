@@ -15,5 +15,6 @@ namespace GeoProject.Models.CSV
         public string BufferRange { get; set; }
         //public double AreaPart { get; set; }
         public double AreaProportion { get; set; }
+        public int? IntersectionIndex { get; set; }
     }
 }
