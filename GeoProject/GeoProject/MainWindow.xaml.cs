@@ -165,6 +165,48 @@ namespace GeoProject
             btnAddBuffers.Background = Brushes.Green;
         }
 
+        private void btnAddMultipleBuffers_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var wasteHeapModel in WasteHeapsModels)
+            {
+                double[] buffersSizeValues = default;
+                var inputDialog = new BufferInput(wasteHeapModel.Name);
+                if (inputDialog.ShowDialog() == true)
+                {
+                    var bufferInput = inputDialog.Answer;
+                    string[] buffersSize = bufferInput.Split(';');
+                    buffersSizeValues = new double[buffersSize.Length];
+                    for (int i = 0; i < buffersSize.Length; i++)
+                    {
+                        buffersSizeValues[i] = double.Parse(buffersSize[i]) * 0.00001;
+                    }
+                    buffersSizeValues = buffersSizeValues.Distinct().ToArray();
+                    Array.Sort(buffersSizeValues);
+                }
+
+                var buffersInfo = new List<BufferInfo>();
+                for (int i = 0; i < buffersSizeValues.Length; i++)
+                {
+                    buffersInfo.Add(
+                        new BufferInfo
+                        {
+                            Buffer = wasteHeapModel.WasteHeap.Buffer(buffersSizeValues[i]),
+                            To = buffersSizeValues[i],
+                            From = i == 0 ? 0 : buffersSizeValues[i - 1]
+                        });
+                }
+
+                for (int i = buffersSizeValues.Length - 1; i > 0; i--)
+                {
+                    buffersInfo[i].Buffer = buffersInfo[i].Buffer.Difference(buffersInfo[i - 1].Buffer);
+                }
+
+                wasteHeapModel.BuffersInfo = buffersInfo;
+            }
+
+            btnAddMultipleBuffers.Background = Brushes.Green;
+        }
+
         private void btnProcess_Click(object sender, RoutedEventArgs e)
         {
             var landPlotsInfo = new List<LandPlotInfo>();
