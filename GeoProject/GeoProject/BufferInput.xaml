@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoProject"
         mc:Ignorable="d"
-        Title="BufferInput" Height="156.84" Width="300.163">
+        Title="BufferInput" Height="156.84" Width="395.44">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
