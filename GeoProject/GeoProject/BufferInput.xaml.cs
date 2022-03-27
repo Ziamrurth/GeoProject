@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace GeoProject
 {
-    /// <summary>
-    /// Логика взаимодействия для BufferInput.xaml
-    /// </summary>
     public partial class BufferInput : Window
     {
         public BufferInput(string wasteHeapName, string defaultAnswer = "")

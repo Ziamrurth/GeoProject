@@ -17,5 +17,11 @@ namespace GeoProject.Helpers
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
+
+        public static void SaveJson<T>(T objectToSave, string fileName)
+        {
+            var res = JsonConvert.SerializeObject(objectToSave);
+            File.WriteAllText(fileName, res);
+        }
     }
 }

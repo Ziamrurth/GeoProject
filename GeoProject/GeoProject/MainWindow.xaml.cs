@@ -238,8 +238,8 @@ namespace GeoProject
             {
                 for (int j = i + 1; j < wasteHeapsIntersects.Count; j++)
                 {
-                    var bufferListI = WasteHeapsModels[i].BuffersInfo;
-                    var bufferListJ = WasteHeapsModels[j].BuffersInfo;
+                    var bufferListI = wasteHeapsIntersects[i].BuffersInfo;
+                    var bufferListJ = wasteHeapsIntersects[j].BuffersInfo;
 
                     foreach (var bufferI in bufferListI)
                     {
@@ -264,24 +264,38 @@ namespace GeoProject
                                     BufferIndex = wasteHeapsIntersects[j].BuffersInfo.IndexOf(bufferJ)
                                 });
 
-
                             }
-
-                            // Убрать из всех буферов пересечения
-                            var buffer = bufferI.Buffer
-                                .Difference(WasteHeapsModels[i].WasteHeap
-                                .Buffer(WasteHeapsModels[i].BuffersInfo.LastOrDefault().To));
-                            wasteHeapIntersections.Add(new WasteHeapIntersection()
-                            {
-                                Segment = buffer,
-                                IntersectionIndex = 0,
-                                WasteHeapModel = wasteHeapsIntersects[i],
-                                BufferIndex = wasteHeapsIntersects[i].BuffersInfo.IndexOf(bufferI)
-                            });
                         }
+                        // Убрать из всех буферов пересечения
+                        var buffI = bufferI.Buffer
+                            .Difference(wasteHeapsIntersects[j].WasteHeap
+                                .Buffer(wasteHeapsIntersects[j].BuffersInfo.LastOrDefault().To));
+                        wasteHeapIntersections.Add(new WasteHeapIntersection()
+                        {
+                            Segment = buffI,
+                            IntersectionIndex = 0,
+                            WasteHeapModel = wasteHeapsIntersects[i],
+                            BufferIndex = wasteHeapsIntersects[i].BuffersInfo.IndexOf(bufferI)
+                        });
+                    }
+                    foreach (var bufferJ in bufferListJ)
+                    {
+                        // Убрать из всех буферов пересечения
+                        var buffJ = bufferJ.Buffer
+                               .Difference(wasteHeapsIntersects[i].WasteHeap
+                                   .Buffer(wasteHeapsIntersects[i].BuffersInfo.LastOrDefault().To));
+                        wasteHeapIntersections.Add(new WasteHeapIntersection()
+                        {
+                            Segment = buffJ,
+                            IntersectionIndex = 0,
+                            WasteHeapModel = wasteHeapsIntersects[j],
+                            BufferIndex = wasteHeapsIntersects[j].BuffersInfo.IndexOf(bufferJ)
+                        });
                     }
                 }
             }
+
+            //JsonHelper.SaveJson(new LandPlots(wasteHeapIntersections), "WasteHeapIntersections.json");
 
             // Обработка участков, попавших в пересечение буферов
             List<LandPlotInfoCsv> resultIntersection = new List<LandPlotInfoCsv>();
