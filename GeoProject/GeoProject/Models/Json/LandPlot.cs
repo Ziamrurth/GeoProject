@@ -57,6 +57,11 @@ namespace GeoProject.Models
         public class Property
         {
             public string cn { get; set; }
+            public double? area_value { get; set; }
+            public double? cad_cost { get; set; }
+            public string category_type { get; set; }
+            public string area_type { get; set; }
+            public string date_create { get; set; }
         }
     }
 }

@@ -27,7 +27,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>6</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -62,6 +62,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GeoProject.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NetTopologySuite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
@@ -124,6 +127,7 @@
     <Compile Include="Helpers\CsvSaveHelper.cs" />
     <Compile Include="Helpers\GeometryHelper.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Helpers\LoggingHelper.cs" />
     <Compile Include="Helpers\OverpassHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -133,6 +137,7 @@
   <ItemGroup>
     <Compile Include="Models\CSV\LandPlotInfoCsv.cs" />
     <Compile Include="Models\Json\LandPlot.cs" />
+    <Compile Include="Models\Json\Settings.cs" />
     <Compile Include="Models\Json\WasteHeapJson.cs" />
     <Compile Include="Models\Json\WasteHeapOSM.cs" />
     <Compile Include="Models\LandPlotInfo.cs" />

@@ -17,7 +17,7 @@ namespace GeoProject.Models
         public class Props
         {
             public string name;
-            public float buffer;
+            public float? buffer;
         }
 
         public class Geometry

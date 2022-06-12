@@ -45,7 +45,7 @@ namespace GeoProject.Helpers
             var geometryCoordinatesList = new List<Coordinate>();
             foreach (var modelPoint in modelPointsList)
             {
-                geometryCoordinatesList.Add(new Coordinate(modelPoint.lat, modelPoint.lon));
+                geometryCoordinatesList.Add(new Coordinate(modelPoint.lat ?? 0, modelPoint.lon ?? 0));
             }
 
             return geometryFactory.CreatePolygon(geometryCoordinatesList.ToArray());
@@ -73,7 +73,12 @@ namespace GeoProject.Helpers
                 landPlotsInfo.Add(new LandPlotInfo()
                 {
                     LandPlot = polygonGeometry,
-                    CadastralNumber = modelItem.properties.cn
+                    CadastralNumber = modelItem.properties.cn,
+                    Area = modelItem.properties.area_value ?? 0,
+                    cad_cost = modelItem.properties.cad_cost ?? 0,
+                    category_type = modelItem.properties.category_type,
+                    area_type = modelItem.properties.area_type,
+                    date_create = modelItem.properties.date_create
                 }); ;
             }
 

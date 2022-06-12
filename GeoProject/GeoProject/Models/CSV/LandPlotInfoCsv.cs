@@ -10,11 +10,17 @@ namespace GeoProject.Models.CSV
     {
         public string CadastralNumber { get; set; }
         public string WasteHeap { get; set; }
-        //public double Area { get; set; }
-        public string Direction { get; set; }
+        public double Area { get; set; }
+        public string Direction1 { get; set; }
+        public string Direction2 { get; set; }
+        public string Direction3 { get; set; }
         public string BufferRange { get; set; }
-        //public double AreaPart { get; set; }
+        public double AreaPart { get; set; }
         public double AreaProportion { get; set; }
         public int? IntersectionIndex { get; set; }
+        public double cad_cost { get; set; }
+        public string category_type { get; set; }
+        public string area_type { get; set; }
+        public string date_create { get; set; }
     }
 }
