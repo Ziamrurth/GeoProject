@@ -515,6 +515,18 @@ namespace GeoProject
             return landPlotInfo;
         }
 
+        private Geometry GetWindRoseBuffer()
+        {
+            foreach (var wasteHeap in WasteHeapsModels)
+            {
+                var center = wasteHeap.WasteHeap.Centroid;
+                string responseString = NasaPowerHelper.GetJsonByCoords(center.X, center.Y);
+                var response = JsonHelper.FromJson<NasaPowerResponse>(responseString);
+            }
+
+            return null;
+        }
+
         private Direction1 GetLandPlotDirection1(Polygon landPlot, Polygon wasteHeap)
         {
             var wasteHeapCenter = wasteHeap.Centroid;
