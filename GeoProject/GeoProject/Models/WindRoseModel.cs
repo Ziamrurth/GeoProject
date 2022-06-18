@@ -33,6 +33,27 @@ namespace GeoProject.Models
             Coef = double.Parse(mw.Coef.Text);
         }
 
+        public WindRoseModel(BufferInput bi)
+        {
+            if (string.IsNullOrEmpty(bi.N.Text))
+            {
+                return;
+            }
+
+            Directions = new Dictionary<Direction2, double>()
+            {
+                { Direction2.N, double.Parse(bi.N.Text) },
+                { Direction2.NE, double.Parse(bi.NE.Text) },
+                { Direction2.E, double.Parse(bi.E.Text) },
+                { Direction2.SE, double.Parse(bi.SE.Text) },
+                { Direction2.S, double.Parse(bi.S.Text) },
+                { Direction2.SW, double.Parse(bi.SW.Text) },
+                { Direction2.W, double.Parse(bi.W.Text) },
+                { Direction2.NW, double.Parse(bi.NW.Text) }
+            };
+            Coef = double.Parse(bi.Coef.Text);
+        }
+
         public List<Vertex2d> GetWindRosePoints(Coordinate center)
         {
             List<Vertex2d> coords = new List<Vertex2d>();

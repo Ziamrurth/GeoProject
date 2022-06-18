@@ -277,6 +277,13 @@ namespace GeoProject
                         buffersInfo[i].Buffer = buffersInfo[i].Buffer.Difference(buffersInfo[i - 1].Buffer);
                     }
 
+                    var windRoseModel = new WindRoseModel(inputDialog);
+                    if (windRoseModel?.Directions != null)
+                    {
+                        var windRoseBuffer = windRoseModel.GetBufferInfo(wasteHeapModel.WasteHeap);
+                        buffersInfo.Add(windRoseBuffer);
+                    }
+
                     wasteHeapModel.BuffersInfo = buffersInfo;
                 }
 
