@@ -57,10 +57,10 @@ namespace GeoProject.Models
         N = 1,
         NE = 2,
         E = 3,
-        ES = 4,
+        SE = 4,
         S = 5,
         SW = 6,
         W = 7,
-        WN = 8
+        NW = 8
     }
 }

@@ -218,6 +218,12 @@ namespace GeoProject
                         buffersInfo[i].Buffer = buffersInfo[i].Buffer.Difference(buffersInfo[i - 1].Buffer);
                     }
 
+                    var windRoseModel = new WindRoseModel(this);
+                    if(windRoseModel?.Directions != null)
+                    {
+                        var windRoseBuffer = windRoseModel.GetBufferInfo(wasteHeapModel.WasteHeap);
+                    }
+
                     wasteHeapModel.BuffersInfo = buffersInfo;
                 }
 
@@ -392,7 +398,7 @@ namespace GeoProject
                                 Direction1 = GetLandPlotDirection1(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
                                 Direction2 = GetLandPlotDirection2(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
                                 Direction3 = GetLandPlotDirection3(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
-                                BufferRange = $"{buffer.From * 100000} - {buffer.To * 100000}",
+                                BufferRange = buffer.From == -1 ? buffer.To.ToString() : $"{buffer.From * 100000} - {buffer.To * 100000}",
                                 AreaProportion = areaProportion,
                                 IntersectionIndex = intersection.IntersectionIndex,
                                 Area = landPlot.Area,

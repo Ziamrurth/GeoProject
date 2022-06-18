@@ -31,6 +31,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -67,6 +69,9 @@
     <StartupObject>GeoProject.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MIConvexHull, Version=1.1.19.1018, Culture=neutral, PublicKeyToken=2644b6f8be52c998, processorArchitecture=MSIL">
+      <HintPath>..\packages\MIConvexHull.1.1.19.1019\lib\netstandard2.0\MIConvexHull.dll</HintPath>
+    </Reference>
     <Reference Include="NetTopologySuite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>..\packages\NetTopologySuite.2.4.0\lib\netstandard2.0\NetTopologySuite.dll</HintPath>
     </Reference>
@@ -145,6 +150,7 @@
     <Compile Include="Models\LandPlotInfo.cs" />
     <Compile Include="Models\WasteHeapIntersection.cs" />
     <Compile Include="Models\WasteHeapModel.cs" />
+    <Compile Include="Models\WindRoseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
