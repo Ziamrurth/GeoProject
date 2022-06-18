@@ -41,10 +41,40 @@ namespace GeoProject.Models
             }
         }
 
-        public LandPlots(Geometry geometry)
+        public LandPlots(List<NetTopologySuite.Geometries.Geometry> geometries)
         {
-            if (geometry == null)
+            if (geometries == null)
                 return;
+
+            type = "FeatureCollection";
+            features = new List<Feature>();
+
+            foreach (var geometry in geometries)
+            {
+                var coordinates = new List<List<List<List<double>>>>()
+                {
+                    new List<List<List<double>>>()
+                    {
+                        new List<List<double>>()
+                    }
+                };
+
+                foreach (var coord in geometry.Coordinates)
+                {
+                    var coords = new List<double>() { coord.Y, coord.X };
+                    coordinates[0][0].Add(coords);
+                }
+
+                features.Add(new Feature()
+                {
+                    type = "Feature",
+                    geometry = new Geometry()
+                    {
+                        type = "MultiPolygon",
+                        coordinates = coordinates
+                    }
+                });
+            }
         }
 
         public class Feature
