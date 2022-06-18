@@ -41,6 +41,12 @@ namespace GeoProject.Models
             }
         }
 
+        public LandPlots(Geometry geometry)
+        {
+            if (geometry == null)
+                return;
+        }
+
         public class Feature
         {
             public string type { get; set; }

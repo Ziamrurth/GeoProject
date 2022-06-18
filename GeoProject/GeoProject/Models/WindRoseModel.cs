@@ -58,7 +58,7 @@ namespace GeoProject.Models
 
             var convexHull = ConvexHull.Create2D(vertexList);
 
-            var coords = vertexList.Select(vertex => new Coordinate(vertex.X, vertex.Y)).ToList();
+            var coords = convexHull.Result.Select(vertex => new Coordinate(vertex.X, vertex.Y)).ToList();
             coords.Add(coords[0]);
 
             var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
