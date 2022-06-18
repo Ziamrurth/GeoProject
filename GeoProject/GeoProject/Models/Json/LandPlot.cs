@@ -7,39 +7,39 @@ namespace GeoProject.Models
         public string type { get; set; }
         public List<Feature> features { get; set; }
 
-        public LandPlots(List<WasteHeapIntersection> wasteHeapIntersections)
-        {
-            if (wasteHeapIntersections == null)
-                return;
-            type = "FeatureCollection";
-            features = new List<Feature>();
-            foreach (var wasteHeapIntersection in wasteHeapIntersections)
-            {
-                var coordinates = new List<List<List<List<double>>>>()
-                {
-                    new List<List<List<double>>>()
-                    {
-                        new List<List<double>>()
-                    }
-                };
+        //public LandPlots(List<WasteHeapIntersection> wasteHeapIntersections)
+        //{
+        //    if (wasteHeapIntersections == null)
+        //        return;
+        //    type = "FeatureCollection";
+        //    features = new List<Feature>();
+        //    foreach (var wasteHeapIntersection in wasteHeapIntersections)
+        //    {
+        //        var coordinates = new List<List<List<List<double>>>>()
+        //        {
+        //            new List<List<List<double>>>()
+        //            {
+        //                new List<List<double>>()
+        //            }
+        //        };
 
-                foreach (var coord in wasteHeapIntersection.Segment.Coordinates)
-                {
-                    var coords = new List<double>() { coord.Y, coord.X };
-                    coordinates[0][0].Add(coords);
-                }
+        //        foreach (var coord in wasteHeapIntersection.Segment.Coordinates)
+        //        {
+        //            var coords = new List<double>() { coord.Y, coord.X };
+        //            coordinates[0][0].Add(coords);
+        //        }
 
-                features.Add(new Feature()
-                {
-                    type = "Feature",
-                    geometry = new Geometry()
-                    {
-                        type = "MultiPolygon",
-                        coordinates = coordinates
-                    }
-                });
-            }
-        }
+        //        features.Add(new Feature()
+        //        {
+        //            type = "Feature",
+        //            geometry = new Geometry()
+        //            {
+        //                type = "MultiPolygon",
+        //                coordinates = coordinates
+        //            }
+        //        });
+        //    }
+        //}
 
         public LandPlots(List<NetTopologySuite.Geometries.Geometry> geometries)
         {

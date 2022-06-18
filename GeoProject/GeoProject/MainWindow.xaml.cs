@@ -222,6 +222,7 @@ namespace GeoProject
                     if(windRoseModel?.Directions != null)
                     {
                         var windRoseBuffer = windRoseModel.GetBufferInfo(wasteHeapModel.WasteHeap);
+                        buffersInfo.Add(windRoseBuffer);
                     }
 
                     wasteHeapModel.BuffersInfo = buffersInfo;
@@ -434,7 +435,7 @@ namespace GeoProject
                     Direction1 = landPlotInfo.Direction1.ToString(),
                     Direction2 = landPlotInfo.Direction2.ToString(),
                     Direction3 = landPlotInfo.Direction3.ToString(),
-                    BufferRange = $"{landPlotPartInfo.BufferInfo.From * 100000} - {landPlotPartInfo.BufferInfo.To * 100000}",
+                    BufferRange = landPlotPartInfo.BufferInfo.From == -1 ? landPlotPartInfo.BufferInfo.To.ToString() : $"{landPlotPartInfo.BufferInfo.From * 100000} - {landPlotPartInfo.BufferInfo.To * 100000}",
                     AreaPart = landPlotPartInfo.Area,
                     //AreaPart = p.Area * 10000000000,
                     AreaProportion = landPlotPartInfo.AreaProportion,
