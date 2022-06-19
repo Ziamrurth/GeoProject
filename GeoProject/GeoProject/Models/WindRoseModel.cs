@@ -21,14 +21,14 @@ namespace GeoProject.Models
 
             Directions = new Dictionary<Direction2, double>()
             {
-                { Direction2.N, double.Parse(mw.N.Text) },
-                { Direction2.NE, double.Parse(mw.NE.Text) },
-                { Direction2.E, double.Parse(mw.E.Text) },
-                { Direction2.SE, double.Parse(mw.SE.Text) },
-                { Direction2.S, double.Parse(mw.S.Text) },
-                { Direction2.SW, double.Parse(mw.SW.Text) },
-                { Direction2.W, double.Parse(mw.W.Text) },
-                { Direction2.NW, double.Parse(mw.NW.Text) }
+                { Direction2.N, double.Parse(mw.N.Text.Replace('.', ',')) },
+                { Direction2.NE, double.Parse(mw.NE.Text.Replace('.', ',')) },
+                { Direction2.E, double.Parse(mw.E.Text.Replace('.', ',')) },
+                { Direction2.SE, double.Parse(mw.SE.Text.Replace('.', ',')) },
+                { Direction2.S, double.Parse(mw.S.Text.Replace('.', ',')) },
+                { Direction2.SW, double.Parse(mw.SW.Text.Replace('.', ',')) },
+                { Direction2.W, double.Parse(mw.W.Text.Replace('.', ',')) },
+                { Direction2.NW, double.Parse(mw.NW.Text.Replace('.', ',')) }
             };
             Coef = double.Parse(mw.Coef.Text);
         }

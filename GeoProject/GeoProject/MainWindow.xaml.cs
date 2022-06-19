@@ -219,7 +219,7 @@ namespace GeoProject
                     }
 
                     var windRoseModel = new WindRoseModel(this);
-                    if(windRoseModel?.Directions != null)
+                    if (windRoseModel?.Directions != null)
                     {
                         var windRoseBuffer = windRoseModel.GetBufferInfo(wasteHeapModel.WasteHeap);
                         buffersInfo.Add(windRoseBuffer);
@@ -246,7 +246,7 @@ namespace GeoProject
                 foreach (var wasteHeapModel in WasteHeapsModels)
                 {
                     double[] buffersSizeValues = default;
-                    var inputDialog = new BufferInput(wasteHeapModel.Name, defaultAnswer: _settings.BuffersSizes);
+                    var inputDialog = new BufferInput(wasteHeapModel.Name, wasteHeapModel.WasteHeap.Centroid, defaultAnswer: _settings.BuffersSizes);
                     if (inputDialog.ShowDialog() == true)
                     {
                         var bufferInput = inputDialog.Answer;
@@ -485,6 +485,21 @@ namespace GeoProject
             }
         }
 
+        private void btnRoseWind_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                GetWindRoseBuffer(WasteHeapsModels.First().WasteHeap.Centroid);
+                btnRoseWind.Background = Brushes.Green;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelper.LogError(ex);
+                btnRoseWind.Background = Brushes.Red;
+            }
+            
+        }
+
         private List<LandPlotInfo> GetLandPlotsInsideBuffer(List<LandPlotInfo> landPlotsInfo, Geometry buffer)
         {
             var result = new List<LandPlotInfo>();
@@ -529,16 +544,20 @@ namespace GeoProject
             return landPlotInfo;
         }
 
-        private Geometry GetWindRoseBuffer()
+        private void GetWindRoseBuffer(NetTopologySuite.Geometries.Point center)
         {
-            foreach (var wasteHeap in WasteHeapsModels)
-            {
-                var center = wasteHeap.WasteHeap.Centroid;
-                string responseString = NasaPowerHelper.GetJsonByCoords(center.X, center.Y);
-                var response = JsonHelper.FromJson<NasaPowerResponse>(responseString);
-            }
+            string responseString = NasaPowerHelper.GetJsonByCoords(center.X, center.Y);
+            var response = JsonHelper.FromJson<NasaPowerResponse>(responseString);
+            var winds = response.properties.parameter.WR10M;
 
-            return null;
+            N.Text = winds._00.WD_AVG.ToString();
+            NE.Text = winds._450.WD_AVG.ToString();
+            E.Text = winds._900.WD_AVG.ToString();
+            SE.Text = winds._1350.WD_AVG.ToString();
+            S.Text = winds._1800.WD_AVG.ToString();
+            SW.Text = winds._2250.WD_AVG.ToString();
+            W.Text = winds._2700.WD_AVG.ToString();
+            NW.Text = winds._3150.WD_AVG.ToString();
         }
 
         private Direction1 GetLandPlotDirection1(Polygon landPlot, Polygon wasteHeap)

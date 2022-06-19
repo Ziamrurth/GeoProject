@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoProject"
         mc:Ignorable="d"
-        Title="BufferInput" Height="165.959" Width="574.165">
+        Title="BufferInput" Height="165.959" Width="620.436">
     <Grid>
         <WrapPanel>
             <StackPanel>
@@ -14,10 +14,6 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock FontSize="16" Margin="10,0,0,0">Зоны</TextBlock>
-                    <TextBox Name="Buffers" Margin="0,5,10,0" Width="100"/>
-                </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <TextBlock FontSize="16" Margin="10,0,0,0">N</TextBlock>
                     <TextBox Name="N" Margin="5" Width="30"/>
@@ -54,9 +50,11 @@
                     <TextBlock FontSize="16" Margin="10,0,0,0">Коэффициент</TextBlock>
                     <TextBox Name="Coef" Margin="5" Width="50"/>
                 </StackPanel>
+
+                <Button Name="btnRoseWind" Click="btnRoseWind_Click" Margin="10">Заполнить автоматически</Button>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="400,0,0,0" >
+            <StackPanel Orientation="Horizontal" Margin="450,0,0,0" >
                 <Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
                 <Button IsCancel="True" MinWidth="60">_Cancel</Button>
             </StackPanel>

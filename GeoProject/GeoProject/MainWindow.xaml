@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoProject"
         mc:Ignorable="d"
-        Title="GeoProject" Height="450" Width="800">
+        Title="GeoProject" Height="546" Width="800">
     <Grid>
         <DockPanel Margin="10">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
@@ -35,9 +35,14 @@
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontSize="16" Margin="10,0,0,0">Зоны</TextBlock>
+                        <TextBlock FontSize="16" Margin="25,0,0,0">Зоны</TextBlock>
                         <TextBox Name="Buffers" Margin="0,5,10,0" Width="100"/>
                     </StackPanel>
+                </StackPanel>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
                         <TextBlock FontSize="16" Margin="10,0,0,0">N</TextBlock>
                         <TextBox Name="N" Margin="5" Width="30"/>
@@ -74,10 +79,15 @@
                         <TextBlock FontSize="16" Margin="10,0,0,0">Коэффициент</TextBlock>
                         <TextBox Name="Coef" Margin="5" Width="50"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Name="btnAddBuffers" Click="btnAddBuffers_Click" Margin="10">Один для всех</Button>
-                        <Button Name="btnAddMultipleBuffers" Click="btnAddMultipleBuffers_Click" Margin="10">Для каждого</Button>
-                    </StackPanel>
+
+                    <Button Name="btnRoseWind" Click="btnRoseWind_Click" Margin="10">Заполнить автоматически</Button>
+                </StackPanel>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="btnAddBuffers" Click="btnAddBuffers_Click" Margin="10">Один для всех</Button>
+                    <Button Name="btnAddMultipleBuffers" Click="btnAddMultipleBuffers_Click" Margin="10">Для каждого</Button>
                 </StackPanel>
             </WrapPanel>
             
@@ -89,7 +99,7 @@
                 <Button x:Name="btnProcess" Click="btnProcess_Click" Content="Обработать участки"/>
             </WrapPanel>
 
-            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,50,0,0" Height="20">
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,20,0,0" Height="20">
                 <Button x:Name="btnSettings" Click="btnSettings_Click" Content="Настройки"/>
             </WrapPanel>
         </DockPanel>
