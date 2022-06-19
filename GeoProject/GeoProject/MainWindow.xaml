@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoProject"
         mc:Ignorable="d"
-        Title="GeoProject" Height="546" Width="800">
+        Title="GeoProject" Height="569" Width="800">
     <Grid>
         <DockPanel Margin="10">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
@@ -97,6 +97,10 @@
 
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
                 <Button x:Name="btnProcess" Click="btnProcess_Click" Content="Обработать участки"/>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <Button x:Name="btnSaveBuffers" Click="btnSaveBuffers_Click" Content="Сохранить буферные зоны"/>
             </WrapPanel>
 
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,20,0,0" Height="20">

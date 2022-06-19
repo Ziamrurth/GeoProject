@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static GeoProject.Models.WasteHeapModel;
 using MIConvexHull;
+using GeoProject.Helpers;
 
 namespace GeoProject.Models
 {
@@ -82,6 +83,9 @@ namespace GeoProject.Models
 
             var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
             var windRosePolygon = geometryFactory.CreatePolygon(coords.ToArray());
+
+            JsonHelper.SaveJson(new LandPlots(new List<Geometry>(){ wasteHeap }), "TestWasteHeap.geojson");
+            JsonHelper.SaveJson(new LandPlots(new List<Geometry>() { windRosePolygon }), "TestWindRose.geojson");
 
             return new BufferInfo { Buffer = windRosePolygon, From = -1, To = Coef };
         }

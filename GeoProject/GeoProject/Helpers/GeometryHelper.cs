@@ -22,7 +22,7 @@ namespace GeoProject.Helpers
             var geometryCoordinatesList = new List<Coordinate>();
             foreach (var modelPoint in modelPointsList)
             {
-                var coordinates = EpsgConvert(modelPoint[0], modelPoint[1]);
+                var coordinates = EpsgConvertTo4326(modelPoint[0], modelPoint[1]);
                 var geometryCoordinate = new Coordinate(coordinates.y, coordinates.x);
                 //var geometryCoordinate = new Coordinate(modelPoint[0], modelPoint[1]);
                 geometryCoordinatesList.Add(geometryCoordinate);
@@ -85,13 +85,24 @@ namespace GeoProject.Helpers
             return landPlotsInfo;
         }
 
-        private static (double x, double y) EpsgConvert(double x, double y)
+        public static (double x, double y) EpsgConvertTo4326(double x, double y)
         {
             var epsg3857ProjectedCoordinateSystem = ProjNet.CoordinateSystems.ProjectedCoordinateSystem.WebMercator;
             var epsg4326GeographicCoordinateSystem = ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84;
 
             var coordinateTransformationFactory = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory();
             var coordinateTransformation = coordinateTransformationFactory.CreateFromCoordinateSystems(epsg3857ProjectedCoordinateSystem, epsg4326GeographicCoordinateSystem);
+
+            return coordinateTransformation.MathTransform.Transform(x, y);
+        }
+
+        public static (double x, double y) EpsgConvertTo3857(double x, double y)
+        {
+            var epsg3857ProjectedCoordinateSystem = ProjNet.CoordinateSystems.ProjectedCoordinateSystem.WebMercator;
+            var epsg4326GeographicCoordinateSystem = ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84;
+
+            var coordinateTransformationFactory = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory();
+            var coordinateTransformation = coordinateTransformationFactory.CreateFromCoordinateSystems(epsg4326GeographicCoordinateSystem, epsg3857ProjectedCoordinateSystem);
 
             return coordinateTransformation.MathTransform.Transform(x, y);
         }

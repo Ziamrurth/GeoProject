@@ -15,6 +15,7 @@ using static GeoProject.Models.WasteHeapModel;
 using GeoProject.Models.Json;
 using System.IO;
 using System.Diagnostics;
+using System.Text;
 
 namespace GeoProject
 {
@@ -497,7 +498,36 @@ namespace GeoProject
                 LoggingHelper.LogError(ex);
                 btnRoseWind.Background = Brushes.Red;
             }
-            
+
+        }
+
+        private void btnSaveBuffers_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!Directory.Exists("Buffers"))
+                    Directory.CreateDirectory("Buffers");
+
+                foreach (var wasteHeap in WasteHeapsModels)
+                {
+                    foreach (var bufferInfo in wasteHeap.BuffersInfo)
+                    {
+                        var buferName = bufferInfo.From == -1 ? bufferInfo.To.ToString() : $"{bufferInfo.From * 100000}-{bufferInfo.To * 100000}";
+                        var buffer = new WasteHeapJson(new List<Geometry>(){ bufferInfo.Buffer }, $"{wasteHeap.Name}_{buferName}");
+                        string fileName = $@"Buffers\buffers_{wasteHeap.Name}_{buferName}.geojson";
+                        JsonHelper.SaveJson<WasteHeapJson>(buffer, fileName);
+                    }
+                }
+
+                Process.Start($@"Buffers");
+
+                btnSaveBuffers.Background = Brushes.Green;
+            }
+            catch (Exception ex)
+            {
+                LoggingHelper.LogError(ex);
+                btnSaveBuffers.Background = Brushes.Red;
+            }
         }
 
         private List<LandPlotInfo> GetLandPlotsInsideBuffer(List<LandPlotInfo> landPlotsInfo, Geometry buffer)
