@@ -404,6 +404,7 @@ namespace GeoProject
                             {
                                 CadastralNumber = landPlot.CadastralNumber,
                                 WasteHeap = intersection.WasteHeapModel.Name,
+                                WasteHeapCenter = $"{intersection.WasteHeapModel.WasteHeap.Centroid.X} | {intersection.WasteHeapModel.WasteHeap.Centroid.Y}",
                                 Direction1 = GetLandPlotDirection1(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
                                 Direction2 = GetLandPlotDirection2(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
                                 Direction3 = GetLandPlotDirection3(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
@@ -438,6 +439,7 @@ namespace GeoProject
                 {
                     CadastralNumber = landPlotInfo.CadastralNumber,
                     WasteHeap = landPlotPartInfo.WasteHeap,
+                    WasteHeapCenter = landPlotPartInfo.WasteHeapCenter,
                     Area = landPlotInfo.Area,
                     //Area = i.LandPlot.Area * 10000000000,
                     Direction1 = landPlotInfo.Direction1.ToString(),
@@ -559,6 +561,7 @@ namespace GeoProject
                             LandPart = landPart,
                             BufferInfo = bufferInfo,
                             WasteHeap = wasteHeapModel.Name,
+                            WasteHeapCenter = $"{wasteHeapModel.WasteHeap.Centroid.X} | {wasteHeapModel.WasteHeap.Centroid.Y}",
                             Area = landPlotInfo.Area * areaProportion,
                             AreaProportion = areaProportion
                         });

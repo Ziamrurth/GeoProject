@@ -27,6 +27,7 @@ namespace GeoProject.Models
             public Geometry LandPart { get; set; }
             public BufferInfo BufferInfo { get; set; }
             public string WasteHeap { get; set; }
+            public string WasteHeapCenter { get; set; }
             public double Area { get; set; }
             public double AreaProportion { get; set; }
         }
