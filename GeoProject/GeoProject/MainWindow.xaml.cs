@@ -404,7 +404,8 @@ namespace GeoProject
                             {
                                 CadastralNumber = landPlot.CadastralNumber,
                                 WasteHeap = intersection.WasteHeapModel.Name,
-                                WasteHeapCenter = $"{intersection.WasteHeapModel.WasteHeap.Centroid.X} | {intersection.WasteHeapModel.WasteHeap.Centroid.Y}",
+                                WHC_lat = intersection.WasteHeapModel.WasteHeap.Centroid.Y.ToString(),
+                                WHC_lon = intersection.WasteHeapModel.WasteHeap.Centroid.X.ToString(),
                                 Direction1 = GetLandPlotDirection1(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
                                 Direction2 = GetLandPlotDirection2(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
                                 Direction3 = GetLandPlotDirection3(landPlot.LandPlot, intersection.WasteHeapModel.WasteHeap).ToString(),
@@ -439,7 +440,8 @@ namespace GeoProject
                 {
                     CadastralNumber = landPlotInfo.CadastralNumber,
                     WasteHeap = landPlotPartInfo.WasteHeap,
-                    WasteHeapCenter = landPlotPartInfo.WasteHeapCenter,
+                    WHC_lat = landPlotPartInfo.WasteHeapCenter.Y.ToString(),
+                    WHC_lon = landPlotPartInfo.WasteHeapCenter.X.ToString(),
                     Area = landPlotInfo.Area,
                     //Area = i.LandPlot.Area * 10000000000,
                     Direction1 = landPlotInfo.Direction1.ToString(),
@@ -561,7 +563,7 @@ namespace GeoProject
                             LandPart = landPart,
                             BufferInfo = bufferInfo,
                             WasteHeap = wasteHeapModel.Name,
-                            WasteHeapCenter = $"{wasteHeapModel.WasteHeap.Centroid.X} | {wasteHeapModel.WasteHeap.Centroid.Y}",
+                            WasteHeapCenter = wasteHeapModel.WasteHeap.Centroid,
                             Area = landPlotInfo.Area * areaProportion,
                             AreaProportion = areaProportion
                         });

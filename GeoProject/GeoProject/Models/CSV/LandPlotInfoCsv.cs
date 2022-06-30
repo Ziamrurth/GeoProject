@@ -10,7 +10,8 @@ namespace GeoProject.Models.CSV
     {
         public string CadastralNumber { get; set; }
         public string WasteHeap { get; set; }
-        public string WasteHeapCenter { get; set; }
+        public string WHC_lon { get; set; }
+        public string WHC_lat { get; set; }
         public double Area { get; set; }
         public string Direction1 { get; set; }
         public string Direction2 { get; set; }
