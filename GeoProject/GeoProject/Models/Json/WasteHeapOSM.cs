@@ -11,16 +11,16 @@ namespace GeoProject.Models.Json
 
     public class Bounds
     {
-        public double minlat { get; set; }
-        public double minlon { get; set; }
-        public double maxlat { get; set; }
-        public double maxlon { get; set; }
+        public double? minlat { get; set; }
+        public double? minlon { get; set; }
+        public double? maxlat { get; set; }
+        public double? maxlon { get; set; }
     }
 
     public class Geometry
     {
-        public double lat { get; set; }
-        public double lon { get; set; }
+        public double? lat { get; set; }
+        public double? lon { get; set; }
     }
 
     public class Tags
@@ -40,7 +40,7 @@ namespace GeoProject.Models.Json
 
     public class WasteHeapOSM
     {
-        public double version { get; set; }
+        public double? version { get; set; }
         public string generator { get; set; }
         public Osm3s osm3s { get; set; }
         public List<Element> elements { get; set; }

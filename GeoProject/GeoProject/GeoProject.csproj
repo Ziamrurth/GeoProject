@@ -16,6 +16,8 @@
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>C:\Users\Аркаша\Desktop\GeoLandProject\GeoProject\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,8 +28,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>6</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -63,7 +65,13 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GeoProject.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MIConvexHull, Version=1.1.19.1018, Culture=neutral, PublicKeyToken=2644b6f8be52c998, processorArchitecture=MSIL">
+      <HintPath>..\packages\MIConvexHull.1.1.19.1019\lib\netstandard2.0\MIConvexHull.dll</HintPath>
+    </Reference>
     <Reference Include="NetTopologySuite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>..\packages\NetTopologySuite.2.4.0\lib\netstandard2.0\NetTopologySuite.dll</HintPath>
     </Reference>
@@ -124,6 +132,8 @@
     <Compile Include="Helpers\CsvSaveHelper.cs" />
     <Compile Include="Helpers\GeometryHelper.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Helpers\LoggingHelper.cs" />
+    <Compile Include="Helpers\NasaPowerHelper.cs" />
     <Compile Include="Helpers\OverpassHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -133,11 +143,14 @@
   <ItemGroup>
     <Compile Include="Models\CSV\LandPlotInfoCsv.cs" />
     <Compile Include="Models\Json\LandPlot.cs" />
+    <Compile Include="Models\Json\NasaPowerResponse.cs" />
+    <Compile Include="Models\Json\Settings.cs" />
     <Compile Include="Models\Json\WasteHeapJson.cs" />
     <Compile Include="Models\Json\WasteHeapOSM.cs" />
     <Compile Include="Models\LandPlotInfo.cs" />
     <Compile Include="Models\WasteHeapIntersection.cs" />
     <Compile Include="Models\WasteHeapModel.cs" />
+    <Compile Include="Models\WindRoseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

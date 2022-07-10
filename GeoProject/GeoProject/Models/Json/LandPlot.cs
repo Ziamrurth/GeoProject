@@ -7,13 +7,49 @@ namespace GeoProject.Models
         public string type { get; set; }
         public List<Feature> features { get; set; }
 
-        public LandPlots(List<WasteHeapIntersection> wasteHeapIntersections)
+        //public LandPlots(List<WasteHeapIntersection> wasteHeapIntersections)
+        //{
+        //    if (wasteHeapIntersections == null)
+        //        return;
+        //    type = "FeatureCollection";
+        //    features = new List<Feature>();
+        //    foreach (var wasteHeapIntersection in wasteHeapIntersections)
+        //    {
+        //        var coordinates = new List<List<List<List<double>>>>()
+        //        {
+        //            new List<List<List<double>>>()
+        //            {
+        //                new List<List<double>>()
+        //            }
+        //        };
+
+        //        foreach (var coord in wasteHeapIntersection.Segment.Coordinates)
+        //        {
+        //            var coords = new List<double>() { coord.Y, coord.X };
+        //            coordinates[0][0].Add(coords);
+        //        }
+
+        //        features.Add(new Feature()
+        //        {
+        //            type = "Feature",
+        //            geometry = new Geometry()
+        //            {
+        //                type = "MultiPolygon",
+        //                coordinates = coordinates
+        //            }
+        //        });
+        //    }
+        //}
+
+        public LandPlots(List<NetTopologySuite.Geometries.Geometry> geometries)
         {
-            if (wasteHeapIntersections == null)
+            if (geometries == null)
                 return;
+
             type = "FeatureCollection";
             features = new List<Feature>();
-            foreach (var wasteHeapIntersection in wasteHeapIntersections)
+
+            foreach (var geometry in geometries)
             {
                 var coordinates = new List<List<List<List<double>>>>()
                 {
@@ -23,7 +59,7 @@ namespace GeoProject.Models
                     }
                 };
 
-                foreach (var coord in wasteHeapIntersection.Segment.Coordinates)
+                foreach (var coord in geometry.Coordinates)
                 {
                     var coords = new List<double>() { coord.Y, coord.X };
                     coordinates[0][0].Add(coords);
@@ -57,6 +93,11 @@ namespace GeoProject.Models
         public class Property
         {
             public string cn { get; set; }
+            public double? area_value { get; set; }
+            public double? cad_cost { get; set; }
+            public string category_type { get; set; }
+            public string area_type { get; set; }
+            public string date_create { get; set; }
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoProject"
         mc:Ignorable="d"
-        Title="GeoProject" Height="450" Width="800">
+        Title="GeoProject" Height="569" Width="800">
     <Grid>
         <DockPanel Margin="10">
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
@@ -34,7 +34,58 @@
             </WrapPanel>
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="Buffers" Margin="5" Width="100"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="25,0,0,0">Зоны</TextBlock>
+                        <TextBox Name="Buffers" Margin="0,5,10,0" Width="100"/>
+                    </StackPanel>
+                </StackPanel>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">N</TextBlock>
+                        <TextBox Name="N" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">NE</TextBlock>
+                        <TextBox Name="NE" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">E</TextBlock>
+                        <TextBox Name="E" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">SE</TextBlock>
+                        <TextBox Name="SE" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">S</TextBlock>
+                        <TextBox Name="S" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">SW</TextBlock>
+                        <TextBox Name="SW" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">W</TextBlock>
+                        <TextBox Name="W" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">NW</TextBlock>
+                        <TextBox Name="NW" Margin="5" Width="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="16" Margin="10,0,0,0">Коэффициент</TextBlock>
+                        <TextBox Name="Coef" Margin="5" Width="50"/>
+                    </StackPanel>
+
+                    <Button Name="btnRoseWind" Click="btnRoseWind_Click" Margin="10">Заполнить автоматически</Button>
+                </StackPanel>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal">
                     <Button Name="btnAddBuffers" Click="btnAddBuffers_Click" Margin="10">Один для всех</Button>
                     <Button Name="btnAddMultipleBuffers" Click="btnAddMultipleBuffers_Click" Margin="10">Для каждого</Button>
                 </StackPanel>
@@ -45,7 +96,15 @@
             </WrapPanel>
 
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-                <Button Name="btnProcess" Click="btnProcess_Click">Обработать участки</Button>
+                <Button x:Name="btnProcess" Click="btnProcess_Click" Content="Обработать участки"/>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+                <Button x:Name="btnSaveBuffers" Click="btnSaveBuffers_Click" Content="Сохранить буферные зоны"/>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,20,0,0" Height="20">
+                <Button x:Name="btnSettings" Click="btnSettings_Click" Content="Настройки"/>
             </WrapPanel>
         </DockPanel>
     </Grid>

@@ -5,26 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoProject"
         mc:Ignorable="d"
-        Title="BufferInput" Height="156.84" Width="395.44">
-    <Grid Margin="15">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        Title="BufferInput" Height="165.959" Width="620.436">
+    <Grid>
+        <WrapPanel>
+            <StackPanel>
+                <Label Name="lblQuestion" Grid.ColumnSpan="2" Margin="20,0,0,0">Question:</Label>
+                <TextBox Name="txtAnswer" Grid.Row="1" MinWidth="250" Grid.ColumnSpan="2" Margin="20,0,0,0">Answer</TextBox>
+            </StackPanel>
 
-        <Image Source="/WpfTutorialSamples;component/Images/question32.png" Width="32" Height="32" Grid.RowSpan="2" Margin="20,0" />
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">N</TextBlock>
+                    <TextBox Name="N" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">NE</TextBlock>
+                    <TextBox Name="NE" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">E</TextBlock>
+                    <TextBox Name="E" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">SE</TextBlock>
+                    <TextBox Name="SE" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">S</TextBlock>
+                    <TextBox Name="S" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">SW</TextBlock>
+                    <TextBox Name="SW" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">W</TextBlock>
+                    <TextBox Name="W" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">NW</TextBlock>
+                    <TextBox Name="NW" Margin="5" Width="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontSize="16" Margin="10,0,0,0">Коэффициент</TextBlock>
+                    <TextBox Name="Coef" Margin="5" Width="50"/>
+                </StackPanel>
 
-        <Label Name="lblQuestion" Grid.ColumnSpan="2" Margin="20,0,0,0">Question:</Label>
-        <TextBox Name="txtAnswer" Grid.Row="1" MinWidth="250" Grid.ColumnSpan="2" Margin="20,0,0,0">Answer</TextBox>
+                <Button Name="btnRoseWind" Click="btnRoseWind_Click" Margin="10">Заполнить автоматически</Button>
+            </StackPanel>
 
-        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
-            <Button IsCancel="True" MinWidth="60">_Cancel</Button>
+            <StackPanel Orientation="Horizontal" Margin="450,0,0,0" >
+                <Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
+                <Button IsCancel="True" MinWidth="60">_Cancel</Button>
+            </StackPanel>
         </WrapPanel>
     </Grid>
 </Window>
